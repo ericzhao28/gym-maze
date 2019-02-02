@@ -6,19 +6,30 @@ import os
 
 class MazeView2D:
 
+
+    def real_life(self):
+        self.__maze = Maze(maze_cells=self.__maze.maze_cells, has_loops=self.has_loops, num_portals=self.num_portals)
+        self.__draw_maze()
+
+
     def __init__(self, maze_name="Maze2D", maze_file_path=None,
                  maze_size=(30, 30), screen_size=(600, 600),
-                 has_loops=False, num_portals=0):
+                 has_loops=False, num_portals=0, delay_real=True):
 
         # PyGame configurations
         pygame.init()
         pygame.display.set_caption(maze_name)
         self.clock = pygame.time.Clock()
         self.__game_over = False
+        self.has_loops = has_loops
+        self.num_portals = num_portals
 
         # Load a maze
         if maze_file_path is None:
-            self.__maze = Maze(maze_size=maze_size, has_loops=has_loops, num_portals=num_portals)
+            if delay_real:
+                self.__maze = Maze(maze_size=maze_size)
+            else:
+                self.__maze = Maze(maze_size=maze_size, has_loops=has_loops, num_portals=num_portals)
         else:
             if not os.path.exists(maze_file_path):
                 dir_path = os.path.dirname(os.path.abspath(__file__))
@@ -286,6 +297,10 @@ class Maze:
                 self.maze_size = tuple(maze_cells.shape)
             else:
                 raise ValueError("maze_cells must be a 2D NumPy array.")
+            if self.has_loops:
+                self.__break_random_walls(0.2)
+            if self.num_portals > 0:
+                self.__set_random_portals(num_portal_sets=self.num_portals, set_size=2)
         # Otherwise, generate a random one
         else:
             # maze's configuration parameters
@@ -372,6 +387,7 @@ class Maze:
             self.__set_random_portals(num_portal_sets=self.num_portals, set_size=2)
 
     def __break_random_walls(self, percent):
+        print("BREAKING WALLS")
         # find some random cells to break
         num_cells = int(round(self.MAZE_H*self.MAZE_W*percent))
         cell_ids = random.sample(range(self.MAZE_W*self.MAZE_H), num_cells)
@@ -390,6 +406,7 @@ class Maze:
                     break
 
     def __set_random_portals(self, num_portal_sets, set_size=2):
+        print("SETTING PORTALS")
         # find some random cells to break
         num_portal_sets = int(num_portal_sets)
         set_size = int(set_size)

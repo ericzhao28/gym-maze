@@ -13,7 +13,10 @@ class MazeEnv(gym.Env):
 
     ACTION = ["N", "S", "E", "W"]
 
-    def __init__(self, maze_file=None, maze_size=None, mode=None):
+    def real_life(self):
+        self.maze_view.real_life()
+
+    def __init__(self, maze_file=None, maze_size=None, mode=None, num_portals=None):
 
         self.viewer = None
 
@@ -24,7 +27,7 @@ class MazeEnv(gym.Env):
         elif maze_size:
             if mode == "plus":
                 has_loops = True
-                num_portals = int(round(min(maze_size)/3))
+                num_portals = int(round(min(maze_size)/3)) if num_portals is None else num_portals
             else:
                 has_loops = False
                 num_portals = 0
@@ -152,16 +155,16 @@ class MazeEnvRandom100x100(MazeEnv):
 
 class MazeEnvRandom10x10Plus(MazeEnv):
 
-    def __init__(self):
-        super(MazeEnvRandom10x10Plus, self).__init__(maze_size=(10, 10), mode="plus")
+    def __init__(self, **kargs):
+        super(MazeEnvRandom10x10Plus, self).__init__(maze_size=(10, 10), mode="plus", **kargs)
 
 
 class MazeEnvRandom20x20Plus(MazeEnv):
 
-    def __init__(self):
-        super(MazeEnvRandom20x20Plus, self).__init__(maze_size=(20, 20), mode="plus")
+    def __init__(self, **kargs):
+        super(MazeEnvRandom20x20Plus, self).__init__(maze_size=(20, 20), mode="plus", **kargs)
 
 
 class MazeEnvRandom30x30Plus(MazeEnv):
-    def __init__(self):
-        super(MazeEnvRandom30x30Plus, self).__init__(maze_size=(30, 30), mode="plus")
+    def __init__(self, **kargs):
+        super(MazeEnvRandom30x30Plus, self).__init__(maze_size=(30, 30), mode="plus", **kargs)
