@@ -113,10 +113,9 @@ class MazeView2D:
                 self.__robot = np.array(self.maze.get_portal(tuple(self.robot)).teleport(tuple(self.robot)))
             self.__draw_robot(transparency=255)
 
-    def reset_robot(self):
-
+    def reset_robot(self, position):
         self.__draw_robot(transparency=0)
-        self.__robot = np.zeros(2, dtype=int)
+        self.__robot = position
         self.__draw_robot(transparency=255)
 
     def __controller_update(self):

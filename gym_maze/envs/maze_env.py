@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 import gym
 from gym import error, spaces, utils
@@ -89,8 +90,11 @@ class MazeEnv(gym.Env):
         return self.state, reward, done, info
 
     def reset(self):
-        self.maze_view.reset_robot()
-        self.state = np.zeros(2)
+        self.state = np.array([random.randint(0, self.maze_size[0] - 1),
+                               random.randint(0, self.maze_size[1] - 1)],
+                              dtype=np.int)
+        self.maze_view.reset_robot(self.state)
+        # self.state = np.zeros(2)
         self.steps_beyond_done = None
         self.done = False
         return self.state
