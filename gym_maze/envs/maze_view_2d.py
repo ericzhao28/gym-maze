@@ -281,7 +281,7 @@ class Maze:
         "W": (-1, 0)
     }
 
-    def __init__(self, maze_cells=None, maze_size=(10,10), has_loops=True, num_portals=0):
+    def __init__(self, maze_cells=None, maze_size=(10,10), has_loops=False, num_portals=0):
 
         # maze member variables
         self.maze_cells = maze_cells
